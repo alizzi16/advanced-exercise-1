@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Consumiendo API</title>
+</head>
+<style>
+    .form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .input-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .cards-container {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .card-container {
+        display: flex;
+        flex-direction: column;
+        background-color: lightgrey;
+        margin: 0.5rem;
+    }
+</style>
+
+<body>
+    <form id="form" class="form">
+        <label class="input-container">
+            <span>First Letter</span>
+            <input type="text" name="firstLetter" />
+        </label>
+        <input type="submit" value="Submit" />
+        <div id="cards"></div>
+    </form>
+</body>
+<script>
+    const form = document.getElementById('form');
+
+    form.addEventListener('submit', (event) => {
+
+        event.preventDefault();
+        const data = { search: form.firstLetter.value };
+        const url = new URL('https://www.themealdb.com/api/json/v1/1/search.php');
+        url.searchParams.set('f', data.search);
+        console.log({ url: url.toString() });
+        fetch(url.toString(), { method: 'GET', })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                console.log('Form submitted successfully');
+                return response.json();
+            })
+            .then((data) => {
+                console.log('Success:', data.meals);
+                const meals = data.meals;
+
+                meals.forEach(meal => {
+                    console.log(meal);
+                    createCard(meal, 'cards');
+                    //console.log(`Nome: ${pessoa.nome}, Idade: ${pessoa.idade}`);
+                });
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    });
+
+    function createCard(mealObj, containerId) {
+
+        const container = document.getElementById(containerId);
+        container.classList.add("cards-container");
+
+        const id = mealObj.idMeal;
+        const name = mealObj.strMeal;
+        const category = mealObj.strCategory;
+        const area = mealObj.strArea;
+
+        const divCard = document.createElement('div');
+        divCard.classList.add("card-container");
+
+        const titleElement = document.createElement('h2');
+        titleElement.textContent = name;
+
+        const categoryElement = document.createElement('p');
+        categoryElement.textContent = category;
+
+        const areaElement = document.createElement('p');
+        areaElement.textContent = area;
+
+        divCard.append(titleElement);
+        divCard.append(categoryElement);
+        divCard.append(areaElement);
+
+        container.append(divCard);
+
+        return {
+
+        };
+
+    }
+
+</script>
+
+</html>
