@@ -1,0 +1,54 @@
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.meals-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.card-container {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(246, 233, 233);
+    margin: 0.5rem;
+}
+
+.filters-container{
+    margin-top: 1rem;
+}
+
+.card-header {
+    display: flex;
+    justify-content: center;
+}
+
+.card-header-title {
+    flex: 1;
+    text-align: center;
+}
+
+.card-attributes {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-image {
+    height: 20rem;
+    width: 100%;
+}
+
+.card-image:hover {
+    cursor: pointer;
+}
+
+.card-title {
+    margin: 0.25rem;
+}
