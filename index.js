@@ -1,24 +1,21 @@
+import { generateAlphabetFilter } from "./js/alphabetFilter.js";
 import { createCard } from "./js/cards.js";
 import { createFilters } from "./js/filters.js";
 
 function init() {
-  const form = document.getElementById("form");
   let mealsList = [];
+  const containerMeals = document.getElementById("meals");
+  const containerAlphabetFilter = generateAlphabetFilter("alfabet");
+  const containerFilters = document.getElementById("additional-filters");
 
-  form.addEventListener("submit", (event) => {
-    const container = document.getElementById("meals");
-    container.classList.add("meals-container");
-    const containerFilters = document.getElementById("additional-filters");
-    container.innerHTML = "";
-    containerFilters.innerHTML = "";
-
+  containerAlphabetFilter.addEventListener("click", (event) => {
     event.preventDefault();
 
-    const data = { search: form.firstLetter.value };
-    const url = new URL("https://www.themealdb.com/api/json/v1/1/search.php");
+    containerMeals.innerHTML = "";
+    containerFilters.innerHTML = "";
 
-    url.searchParams.set("f", data.search);
-    console.log(url.toString());
+    const url = new URL("https://www.themealdb.com/api/json/v1/1/search.php");
+    url.searchParams.set("f", event.target.dataset.letter);
 
     fetch(url)
       .then((response) => {
@@ -28,12 +25,14 @@ function init() {
         return response.json();
       })
       .then((data) => {
+        if (data.meals === null || data.meals.length === 0) {
+          containerMeals.innerHTML = `<p>No se encontraron resultados.</p>`;
+          return;
+        }
         mealsList = data.meals;
-
-        if (mealsList.length > 0) createFilters(mealsList, containerFilters.id);
-
+        createFilters(mealsList, containerFilters.id, containerMeals.id);
         mealsList.forEach((meal) => {
-          createCard(mealsList, meal, container.id);
+          createCard(mealsList, meal, containerMeals.id);
         });
       })
       .catch((error) => {
