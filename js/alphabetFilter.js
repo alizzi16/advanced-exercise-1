@@ -7,12 +7,17 @@ export function generateAlphabetFilter(id) {
 
   letters.forEach((letter) => {
     const linkLetter = document.createElement("a");
-    linkLetter.href = '#';
-    linkLetter.classList.add('letter');
+    linkLetter.href = "#";
+    linkLetter.classList.add("letter");
     linkLetter.textContent = letter.toLocaleUpperCase();
     linkLetter.dataset.letter = letter;
     containerAlphabet.append(linkLetter);
   });
+
+  const selectedLetter = localStorage.getItem("selectedLetter");
+  if (selectedLetter !== null && selectedLetter !== undefined) {
+    document.querySelector(`[data-letter="${selectedLetter}"]`).classList.add('active');
+  }
 
   return containerAlphabet;
 }

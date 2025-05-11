@@ -4,8 +4,8 @@ import { generateFilter } from "./selectFilter.js";
 export function createFilters(mealsList, formId, containerMealId) {
   const form = document.getElementById(formId);
 
-  const categories = new Set(mealsList.map((item) => item.strCategory));
-  const areas = new Set(mealsList.map((item) => item.strArea));
+  const categories = new Set(mealsList.map((meal) => meal.category));
+  const areas = new Set(mealsList.map((meal) => meal.area));
 
   const categoryFilter = generateFilter("category", categories);
   const areaFilter = generateFilter("area", areas);
@@ -32,8 +32,8 @@ export function createFilters(mealsList, formId, containerMealId) {
 
     const newMealList = mealsList.filter((meal) => {
       const matchCategory =
-        selectedCategory === "all" || meal.strCategory === selectedCategory;
-      const matchArea = selectedArea === "all" || meal.strArea === selectedArea;
+        selectedCategory === "all" || meal.category === selectedCategory;
+      const matchArea = selectedArea === "all" || meal.area === selectedArea;
       return matchCategory && matchArea;
     });
 

@@ -1,29 +1,8 @@
-export function createCard(mealsList, mealObj, containerId) {
+export function createCard(mealsList, meal, containerId) {
   const container = document.getElementById(containerId);
 
-  const id = mealObj.idMeal;
-  const name = mealObj.strMeal;
-  const category = mealObj.strCategory;
-  const area = mealObj.strArea;
-  const imgUrl = mealObj.strMealThumb;
-  const instructions = mealObj.strInstructions;
-
-  const ingredients = [];
   let stringIngredients = "";
-
-  for (const key of Object.keys(mealObj)) {
-    if (key.startsWith("strIngredient")) {
-      const ingredientNumber = key.replace("strIngredient", "");
-
-      if (mealObj[key] !== "" && mealObj[key] !== null)
-        ingredients.push({
-          ingredient: mealObj[key],
-          measure: mealObj[`strMeasure${ingredientNumber}`],
-        });
-    }
-  }
-
-  ingredients.forEach((item) => {
+  meal.ingredients.forEach((item) => {
     stringIngredients += `<li> ${item.measure} ${item.ingredient} </li>`;
   });
 
@@ -36,14 +15,14 @@ export function createCard(mealsList, mealObj, containerId) {
   cardFront.innerHTML = `
     <div class='card-header'>
         <div class='card-header-title'>
-            <h3 class='card-title'>${name.toUpperCase()}</h3>
+            <h3 class='card-title'>${meal.name.toUpperCase()}</h3>
         </div>
     </div>
     <div class='card-attributes'>
-        <p class='card-container__category'>${category.toUpperCase()}</p>
-        <p class='card-container__area'>${area.toUpperCase()}</p>
+        <p class='card-container__category'>${meal.category.toUpperCase()}</p>
+        <p class='card-container__area'>${meal.area.toUpperCase()}</p>
     </div>
-    <img class='card-image' src="${imgUrl}" />
+    <img class='card-image' src="${meal.imgUrl}" />
   `;
 
   const cardBack = document.createElement("div");
@@ -59,7 +38,7 @@ export function createCard(mealsList, mealObj, containerId) {
         </ul>
         <div class='card-instructions'>
             <h3>Instruccions</h3>
-            <p>${instructions}</p>
+            <p>${meal.instructions}</p>
         </div>        
     </div>
   `;
@@ -74,7 +53,7 @@ export function createCard(mealsList, mealObj, containerId) {
 
   const deleteButton = document.createElement("a");
   deleteButton.textContent = "X";
-  deleteButton.dataset.id = id;
+  deleteButton.dataset.id = meal.id;
 
   const divTitle = divCard.querySelector(".card-header");
   divTitle.append(deleteButton);
@@ -82,15 +61,13 @@ export function createCard(mealsList, mealObj, containerId) {
   deleteButton.addEventListener("click", () => {
     const elementId = deleteButton.dataset.id;
     divCard.remove();
-
-    mealsList = mealsList.filter((item) => item.idMeal !== elementId);
+    mealsList = mealsList.filter((meal) => meal.id !== elementId);
     console.log(mealsList);
   });
 
   container.append(divCard);
 
   return {
-    id: id,
-    name: name,
+    meal
   };
 }
