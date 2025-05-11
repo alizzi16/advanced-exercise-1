@@ -22,6 +22,7 @@ function init() {
 
     containerMeals.innerHTML = "";
     containerFilters.innerHTML = "";
+    mealsList = [];
 
     [...containerAlphabetFilter.children].forEach((a) => {
       a.classList.remove("active");
@@ -29,10 +30,11 @@ function init() {
     event.target.classList.add("active");
 
     const selectedLetter = event.target.dataset.letter;
+    console.log(selectedLetter);
     const url = new URL("https://www.themealdb.com/api/json/v1/1/search.php");
     url.searchParams.set("f", selectedLetter);
     localStorage.setItem("selectedLetter", selectedLetter);
-
+    console.log(url);
     fetch(url)
       .then((response) => {
         if (!response.ok) {
@@ -74,7 +76,8 @@ function init() {
         });
 
         localStorage.setItem("meals", JSON.stringify(mealsList));
-        console.log(mealsList);
+        console.log(data.meals);
+        console.log(`data consultada` + JSON.stringify(mealsList));
 
         createFilters(mealsList, containerFilters.id, containerMeals.id);
         mealsList.forEach((meal) => {
