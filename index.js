@@ -5,7 +5,7 @@ import { createFilters } from "./js/filters.js";
 function init() {
   let mealsList = [];
   const containerMeals = document.getElementById("meals");
-  const containerAlphabetFilter = generateAlphabetFilter("alfabet");
+  const containerAlphabetFilter = generateAlphabetFilter("alphabet");
   const containerFilters = document.getElementById("additional-filters");
 
   containerAlphabetFilter.addEventListener("click", (event) => {
@@ -13,6 +13,11 @@ function init() {
 
     containerMeals.innerHTML = "";
     containerFilters.innerHTML = "";
+
+    [...containerAlphabetFilter.children].forEach((a) => {
+      a.classList.remove("active");
+    });
+    event.target.classList.add("active");
 
     const url = new URL("https://www.themealdb.com/api/json/v1/1/search.php");
     url.searchParams.set("f", event.target.dataset.letter);

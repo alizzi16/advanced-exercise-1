@@ -6,6 +6,7 @@ export function createCard(mealsList, mealObj, containerId) {
   const category = mealObj.strCategory;
   const area = mealObj.strArea;
   const imgUrl = mealObj.strMealThumb;
+  const instructions = mealObj.strInstructions;
 
   const ingredients = [];
   let stringIngredients = "";
@@ -28,18 +29,19 @@ export function createCard(mealsList, mealObj, containerId) {
 
   const divCard = document.createElement("div");
   divCard.classList.add("card-container");
+  divCard.classList.add("front");
 
   const cardFront = document.createElement("div");
   cardFront.classList.add("card-front");
   cardFront.innerHTML = `
     <div class='card-header'>
         <div class='card-header-title'>
-            <h2 class='card-title'>${name}</h2>
+            <h3 class='card-title'>${name.toUpperCase()}</h3>
         </div>
     </div>
     <div class='card-attributes'>
-        <p>${category}</p>
-        <p>${area}</p>
+        <p class='card-container__category'>${category.toUpperCase()}</p>
+        <p class='card-container__area'>${area.toUpperCase()}</p>
     </div>
     <img class='card-image' src="${imgUrl}" />
   `;
@@ -55,17 +57,22 @@ export function createCard(mealsList, mealObj, containerId) {
         <ul>
         ${stringIngredients}
         </ul>
+        <div class='card-instructions'>
+            <h3>Instruccions</h3>
+            <p>${instructions}</p>
+        </div>        
     </div>
   `;
 
   divCard.append(cardFront, cardBack);
 
   divCard.addEventListener("click", () => {
+    divCard.classList.toggle("front");
     cardFront.classList.toggle("hidden");
     cardBack.classList.toggle("hidden");
   });
 
-  const deleteButton = document.createElement("button");
+  const deleteButton = document.createElement("a");
   deleteButton.textContent = "X";
   deleteButton.dataset.id = id;
 
