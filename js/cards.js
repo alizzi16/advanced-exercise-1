@@ -37,7 +37,7 @@ export function createCard(meal, containerId, removeItem) {
         ${stringIngredients}
         </ul>
         <div class='card-instructions'>
-            <h3>Instruccions</h3>
+            <h3>Instructions</h3>
             <p>${meal.instructions}</p>
         </div>        
     </div>
