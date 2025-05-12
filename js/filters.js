@@ -1,11 +1,10 @@
 import { createCard } from "./cards.js";
 import { generateFilter } from "./selectFilter.js";
 
-export function createFilters(mealsList, formId, containerMealId) {
+export function createFilters(formId, containerMealId, getMeals, removeItem) {
   const form = document.getElementById(formId);
-
-  const categories = new Set(mealsList.map((meal) => meal.category));
-  const areas = new Set(mealsList.map((meal) => meal.area));
+  const categories = new Set(getMeals().map((meal) => meal.category));
+  const areas = new Set(getMeals().map((meal) => meal.area));
 
   const categoryFilter = generateFilter("category", categories);
   const areaFilter = generateFilter("area", areas);
@@ -23,7 +22,7 @@ export function createFilters(mealsList, formId, containerMealId) {
 
   const selectedCategory = localStorage.getItem("selectedCategory");
   const selectedArea = localStorage.getItem("selectedArea");
-  
+
   if (selectedCategory !== null && selectedCategory !== undefined)
     document.querySelector('[name="categoryFilter"]').value = selectedCategory;
   if (selectedArea !== null && selectedArea !== undefined)
@@ -41,7 +40,7 @@ export function createFilters(mealsList, formId, containerMealId) {
     localStorage.setItem("selectedCategory", selectedCategory);
     localStorage.setItem("selectedArea", selectedArea);
 
-    const newMealList = mealsList.filter((meal) => {
+    const newMealList = getMeals().filter((meal) => {
       const matchCategory =
         selectedCategory === "all" || meal.category === selectedCategory;
       const matchArea = selectedArea === "all" || meal.area === selectedArea;
@@ -49,7 +48,7 @@ export function createFilters(mealsList, formId, containerMealId) {
     });
 
     newMealList.forEach((meal) => {
-      createCard(newMealList, meal, containerMealId);
+      createCard(meal, containerMealId, removeItem);
     });
   });
 }

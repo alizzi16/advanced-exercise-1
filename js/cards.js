@@ -1,4 +1,4 @@
-export function createCard(mealsList, meal, containerId) {
+export function createCard(meal, containerId, removeItem) {
   const container = document.getElementById(containerId);
 
   let stringIngredients = "";
@@ -59,10 +59,8 @@ export function createCard(mealsList, meal, containerId) {
   divTitle.append(deleteButton);
 
   deleteButton.addEventListener("click", () => {
-    const elementId = deleteButton.dataset.id;
     divCard.remove();
-    mealsList = mealsList.filter((meal) => meal.id !== elementId);
-    console.log(mealsList);
+    removeItem(deleteButton.dataset.id);
   });
 
   container.append(divCard);

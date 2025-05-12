@@ -5,7 +5,7 @@ import { createFilters } from "./js/filters.js";
 function init() {
   let mealsList = JSON.parse(localStorage.getItem("meals"));
   let selectedLetter = localStorage.getItem("selectedLetter");
-  console.log(selectedLetter, mealsList);
+
   const containerMeals = document.getElementById("meals");
   const containerAlphabetFilter = generateAlphabetFilter(
     "alphabet",
@@ -14,9 +14,9 @@ function init() {
   const containerFilters = document.getElementById("additional-filters");
 
   if (mealsList !== null && mealsList !== undefined) {
-    createFilters(mealsList, containerFilters.id, containerMeals.id);
+    createFilters(containerFilters.id, containerMeals.id, getMeals, removeMeal);
     mealsList.forEach((meal) => {
-      createCard(mealsList, meal, containerMeals.id);
+      createCard(meal, containerMeals.id, removeMeal);
     });
   } else {
     mealsList = [];
@@ -52,6 +52,8 @@ function init() {
         if (data.meals === null || data.meals.length === 0) {
           mealsList = [];
           localStorage.removeItem("meals");
+          localStorage.removeItem("selectedCategory");
+          localStorage.removeItem("selectedArea");
           containerMeals.innerHTML = `<p>No se encontraron resultados.</p>`;
           return;
         }
@@ -87,15 +89,29 @@ function init() {
         localStorage.removeItem("selectedCategory");
         localStorage.removeItem("selectedArea");
 
-        createFilters(mealsList, containerFilters.id, containerMeals.id);
+        createFilters(
+          containerFilters.id,
+          containerMeals.id,
+          getMeals,
+          removeMeal
+        );
         mealsList.forEach((meal) => {
-          createCard(mealsList, meal, containerMeals.id);
+          createCard(meal, containerMeals.id, removeMeal);
         });
       })
       .catch((error) => {
         console.error("Error:", error);
       });
   });
+
+  function removeMeal(id) {
+    mealsList = mealsList.filter((meal) => meal.id !== id);
+    localStorage.setItem("meals", JSON.stringify(mealsList));
+  }
+
+  function getMeals() {
+    return mealsList;
+  }
 }
 
 init();
