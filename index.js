@@ -14,10 +14,18 @@ function init() {
   const containerFilters = document.getElementById("additional-filters");
 
   if (mealsList !== null && mealsList !== undefined) {
-    createFilters(containerFilters.id, containerMeals.id, getMeals, removeMeal);
-    mealsList.forEach((meal) => {
-      createCard(meal, containerMeals.id, removeMeal);
-    });
+    const selected = createFilters(
+      containerFilters.id,
+      containerMeals.id,
+      getMeals,
+      removeMeal
+    );
+
+    if (!selected) {
+      mealsList.forEach((meal) => {
+        createCard(meal, containerMeals.id, removeMeal);
+      });
+    }
   } else {
     mealsList = [];
     if (selectedLetter !== null && selectedLetter !== undefined)

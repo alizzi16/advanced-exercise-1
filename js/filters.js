@@ -23,10 +23,25 @@ export function createFilters(formId, containerMealId, getMeals, removeItem) {
   const selectedCategory = localStorage.getItem("selectedCategory");
   const selectedArea = localStorage.getItem("selectedArea");
 
-  if (selectedCategory !== null && selectedCategory !== undefined)
+  const existCategoryFilter =
+    selectedCategory !== null && selectedCategory !== undefined;
+  const existAreaFilter = selectedArea !== null && selectedArea !== undefined;
+
+  if (existCategoryFilter && existAreaFilter) {
     document.querySelector('[name="categoryFilter"]').value = selectedCategory;
-  if (selectedArea !== null && selectedArea !== undefined)
     document.querySelector('[name="areaFilter"]').value = selectedArea;
+
+    const newMealList = getMeals().filter((meal) => {
+      const matchCategory =
+        selectedCategory === "all" || meal.category === selectedCategory;
+      const matchArea = selectedArea === "all" || meal.area === selectedArea;
+      return matchCategory && matchArea;
+    });
+
+    newMealList.forEach((meal) => {
+      createCard(meal, containerMealId, removeItem);
+    });
+  }
 
   form.addEventListener("change", (_e) => {
     const containerMeals = document.getElementById(containerMealId);
@@ -51,4 +66,6 @@ export function createFilters(formId, containerMealId, getMeals, removeItem) {
       createCard(meal, containerMealId, removeItem);
     });
   });
+
+  return existCategoryFilter && existAreaFilter;
 }
