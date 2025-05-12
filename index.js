@@ -4,8 +4,13 @@ import { createFilters } from "./js/filters.js";
 
 function init() {
   let mealsList = JSON.parse(localStorage.getItem("meals"));
+  let selectedLetter = localStorage.getItem("selectedLetter");
+  console.log(selectedLetter, mealsList);
   const containerMeals = document.getElementById("meals");
-  const containerAlphabetFilter = generateAlphabetFilter("alphabet");
+  const containerAlphabetFilter = generateAlphabetFilter(
+    "alphabet",
+    selectedLetter
+  );
   const containerFilters = document.getElementById("additional-filters");
 
   if (mealsList !== null && mealsList !== undefined) {
@@ -15,6 +20,8 @@ function init() {
     });
   } else {
     mealsList = [];
+    if (selectedLetter !== null && selectedLetter !== undefined)
+      containerMeals.innerHTML = `<p>No se encontraron resultados.</p>`;
   }
 
   containerAlphabetFilter.addEventListener("click", (event) => {
@@ -29,7 +36,7 @@ function init() {
     });
     event.target.classList.add("active");
 
-    const selectedLetter = event.target.dataset.letter;
+    selectedLetter = event.target.dataset.letter;
     const url = new URL("https://www.themealdb.com/api/json/v1/1/search.php");
     url.searchParams.set("f", selectedLetter);
     localStorage.setItem("selectedLetter", selectedLetter);
@@ -43,6 +50,8 @@ function init() {
       })
       .then((data) => {
         if (data.meals === null || data.meals.length === 0) {
+          mealsList = [];
+          localStorage.removeItem("meals");
           containerMeals.innerHTML = `<p>No se encontraron resultados.</p>`;
           return;
         }

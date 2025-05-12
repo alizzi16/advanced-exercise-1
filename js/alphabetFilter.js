@@ -1,4 +1,4 @@
-export function generateAlphabetFilter(id) {
+export function generateAlphabetFilter(id, selectedLetter) {
   const containerAlphabet = document.getElementById(id);
   const letters = [];
   for (let i = 65; i <= 90; i++) {
@@ -14,7 +14,6 @@ export function generateAlphabetFilter(id) {
     containerAlphabet.append(linkLetter);
   });
 
-  const selectedLetter = localStorage.getItem("selectedLetter");
   if (selectedLetter !== null && selectedLetter !== undefined) {
     document.querySelector(`[data-letter="${selectedLetter}"]`).classList.add('active');
   }
