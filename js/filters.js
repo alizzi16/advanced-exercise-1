@@ -21,6 +21,14 @@ export function createFilters(mealsList, formId, containerMealId) {
     </label>
     `;
 
+  const selectedCategory = localStorage.getItem("selectedCategory");
+  const selectedArea = localStorage.getItem("selectedArea");
+  
+  if (selectedCategory !== null && selectedCategory !== undefined)
+    document.querySelector('[name="categoryFilter"]').value = selectedCategory;
+  if (selectedArea !== null && selectedArea !== undefined)
+    document.querySelector('[name="areaFilter"]').value = selectedArea;
+
   form.addEventListener("change", (_e) => {
     const containerMeals = document.getElementById(containerMealId);
     containerMeals.innerHTML = "";
@@ -29,6 +37,9 @@ export function createFilters(mealsList, formId, containerMealId) {
       '[name="categoryFilter"]'
     ).value;
     const selectedArea = document.querySelector('[name="areaFilter"]').value;
+
+    localStorage.setItem("selectedCategory", selectedCategory);
+    localStorage.setItem("selectedArea", selectedArea);
 
     const newMealList = mealsList.filter((meal) => {
       const matchCategory =

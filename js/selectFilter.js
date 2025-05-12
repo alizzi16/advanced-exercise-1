@@ -1,8 +1,9 @@
 export function generateFilter(name, items) {
   const filter = document.createElement("select");
+  const filterName = `${name.toLowerCase()}Filter`;
   const optionAll = createOptionAll();
 
-  filter.name = `${name.toLowerCase()}Filter`;
+  filter.name = filterName;
   filter.append(optionAll);
 
   items.forEach((element) => {
